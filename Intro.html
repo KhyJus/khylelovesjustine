@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Unfolding Message</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .line {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .word {
+      opacity: 0;
+      margin: 0 5px;
+      font-size: 1.8rem;
+      text-shadow: 0 0 15px #fff;
+      animation: fadeInWord 0.5s forwards;
+    }
+
+    @keyframes fadeInWord {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #startBtn {
+      padding: 12px 30px;
+      font-size: 1.2rem;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 0 15px #ff69b4;
+      cursor: pointer;
+      margin-top: 30px;
+    }
+
+    #startBtn:hover {
+      background-color: #ff1493;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="messageContainer"></div>
+  <button id="startBtn" onclick="startMessage()">Start</button>
+
+  <audio id="bgMusic" src="your-music-file.mp3" preload="auto"></audio>
+  
+  <script>
+    const lines = [
+      "Maybe it's the way you say my name",
+      "Maybe it's the way you play your game",
+      "But it's so good, I've never known anybody like you",
+      "But it's so good, I've never dreamed of nobody like you",
+      "And I've heard of a love that comes once in a lifetime",
+      "And I'm pretty sure that you are that love of mine"
+    ];
+
+    const container = document.getElementById('messageContainer');
+    const audio = document.getElementById('bgMusic');
+    let lineIndex = 0;
+
+    function startMessage() {
+      document.getElementById('startBtn').style.display = 'none';
+      audio.play();
+      showLine();
+    }
+
+    function showLine() {
+      if (lineIndex >= lines.length) {
+        // Redirect after last line finishes (wait 8s more)
+        setTimeout(() => {
+          window.location.href = "babi justine.html";
+        }, 8000);
+        return;
+      }
+
+      const lineText = lines[lineIndex];
+      const lineEl = document.createElement('div');
+      lineEl.className = 'line';
+      container.appendChild(lineEl);
+
+      const words = lineText.split(' ');
+      words.forEach((word, i) => {
+        const span = document.createElement('span');
+        span.className = 'word';
+        span.textContent = word;
+        span.style.animationDelay = `${i * 0.5}s`;
+        lineEl.appendChild(span);
+      });
+
+      setTimeout(() => {
+        lineEl.style.opacity = 1;
+      }, 100);
+
+      lineIndex++;
+      setTimeout(showLine, 6000); // Next line after 8 seconds
+    }
+  </script>
+
+</body>
+</html>
